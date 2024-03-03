@@ -39,7 +39,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsNumber()
   lastUpdatedBy: number;
 
-  // @ApiProperty({ type: RoleEnum })
+  @ApiProperty({ enum: RoleEnum })
   @IsString()
   @IsNotEmpty()
   role: RoleEnum;
