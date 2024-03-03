@@ -1,26 +1,56 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { ResData } from 'src/lib/resData';
+import { IAuthService, ILoginData } from './interfaces/auth.service';
+import { BcryptHashing } from 'src/lib/bcrypt';
+import { JwtService } from '@nestjs/jwt';
+import { IUserService } from '../user/interfaces/user.service';
+import { LoginDto, RegisterDto } from './dto/auth.dto';
+import { LoginOrPasswordWrong } from './exception/auth.exception';
 
 @Injectable()
-export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
+export class AuthService implements IAuthService {
+  constructor(
+    @Inject('IUserService') private readonly userService: IUserService,
+    private jwtService: JwtService,
+  ) {}
+
+  async register(dto: RegisterDto): Promise<ResData<ILoginData>> {
+    const hashedPassword = await BcryptHashing.hash(dto.password);
+    dto.password = hashedPassword;
+
+    const { data: newUser } = await this.userService.create(dto);
+    const token = await this.jwtService.signAsync({ id: newUser.id });
+
+    return new ResData<ILoginData>(
+      'User was created successfully',
+      HttpStatus.CREATED,
+      {
+        user: newUser,
+        token,
+      },
+    );
   }
 
-  findAll() {
-    return `This action returns all auth`;
-  }
+  async login(dto: LoginDto): Promise<ResData<ILoginData>> {
+    const { data: foundUser } = await this.userService.findByLogin(dto.login);
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
+    if (!foundUser) {
+      throw new LoginOrPasswordWrong();
+    }
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
+    const isMatch = await BcryptHashing.compare(
+      dto.password,
+      foundUser.password,
+    );
 
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+    if (!isMatch) {
+      throw new LoginOrPasswordWrong();
+    }
+
+    const token = await this.jwtService.signAsync({ id: foundUser.id });
+    return new ResData<ILoginData>('Success', HttpStatus.OK, {
+      user: foundUser,
+      token,
+    });
   }
 }
