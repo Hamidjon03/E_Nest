@@ -21,6 +21,7 @@ export class CreateUserDto {
 
   @ApiProperty({ type: Number })
   @IsNumber()
+  @IsNotEmpty()
   companyId: number;
 
   @ApiProperty({ type: Number })

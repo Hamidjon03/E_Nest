@@ -9,5 +9,5 @@ export interface ITaskService {
   update(id: ID, dto: UpdateTaskDto): Promise<ResData<TaskEntity>>;
   delete(id: ID): Promise<ResData<TaskEntity | undefined>>;
   findOneById(id: ID): Promise<ResData<TaskEntity | undefined>>;
-  findOneByCompnayId(id: ID): Promise<ResData<TaskEntity | undefined>>;
+  findByCompnayId(id: ID): Promise<ResData<Array<TaskEntity | undefined>>>;
 }

@@ -20,5 +20,6 @@ import { config } from 'src/common/config/index';
     { provide: 'IUserService', useClass: UserService },
     { provide: 'IUserRepository', useClass: UserRepository },
   ],
+  exports: [{ provide: 'IAuthService', useClass: AuthService }],
 })
 export class AuthModule {}

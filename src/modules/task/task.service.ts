@@ -15,14 +15,14 @@ export class TaskService implements ITaskService {
     private readonly taskRepository: ITaskRepository,
   ) {}
 
-  async findOneByCompnayId(companyid: ID): Promise<ResData<TaskEntity>> {
-    const foundTask = await this.taskRepository.getOneCompanyId(companyid);
+  async findByCompnayId(companyid: ID): Promise<ResData<Array<TaskEntity>>> {
+    const foundTask = await this.taskRepository.getByCompanyId(companyid);
 
     if (!foundTask) {
       throw new TaskNotFoundException();
     }
 
-    return new ResData<TaskEntity>('success', 200, foundTask);
+    return new ResData<Array<TaskEntity>>('success', 200, foundTask);
   }
 
   async create(createTaskDto: CreateTaskDto): Promise<ResData<TaskEntity>> {
@@ -74,5 +74,4 @@ export class TaskService implements ITaskService {
 
     return new ResData<TaskEntity>('Task was deleted', 200, deletedTask);
   }
-
 }

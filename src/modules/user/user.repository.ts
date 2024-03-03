@@ -53,6 +53,13 @@ export class UserRepository extends Postgres implements IUserRepository {
       id,
     );
   }
+
+  async getByCompanyId(id: ID): Promise<Array<UserEntity>> {
+    return await this.fetchAll<UserEntity, number>(
+      `select * from users where company_id = $1`,
+      id,
+    );
+  }
   async findByLogin(login: string): Promise<UserEntity> {
     return await this.fetch<UserEntity, string>(
       `select * from users where login = $1`,

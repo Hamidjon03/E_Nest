@@ -4,8 +4,8 @@ import { ITaskRepository } from './interfaces/task.repository';
 import { TaskEntity } from './entities/task.entity';
 
 export class TaskRepository extends Postgres implements ITaskRepository {
-  async getOneCompanyId(id: number): Promise<TaskEntity> {
-    return await this.fetch<TaskEntity, number>(
+  async getByCompanyId(id: number): Promise<Array<TaskEntity>> {
+    return await this.fetchAll<TaskEntity, number>(
       `select * from tasks where company_id = $1`,
       id,
     );

@@ -6,5 +6,5 @@ export interface ITaskRepository {
   update(id: ID, dto: TaskEntity): Promise<TaskEntity>;
   delete(id: ID): Promise<TaskEntity | undefined>;
   getOneById(id: ID): Promise<TaskEntity | undefined>;
-  getOneCompanyId(id: ID): Promise<TaskEntity | undefined>;
+  getByCompanyId(id: ID): Promise<Array<TaskEntity | undefined>>;
 }

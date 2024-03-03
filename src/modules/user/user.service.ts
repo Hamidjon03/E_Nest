@@ -7,6 +7,7 @@ import { UserEntity } from './entities/user.entity';
 import { ResData } from 'src/lib/resData';
 import { ID } from 'src/common/types/type';
 import { UserNotFoundException } from './exception/user.exception';
+import { waitForDebugger } from 'inspector';
 
 @Injectable()
 export class UserService implements IUserService {
@@ -14,6 +15,13 @@ export class UserService implements IUserService {
     @Inject('IUserRepository')
     private readonly userRepository: IUserRepository,
   ) {}
+  async findByCompnayId(id: ID): Promise<ResData<Array<UserEntity>>> {
+    const foundUsers = await this.userRepository.getByCompanyId(id);
+    if(!foundUsers) {
+      throw new UserNotFoundException()
+    }
+    return new ResData<Array<UserEntity>>('success', 200, foundUsers);
+  }
 
   async create(createUserDto: CreateUserDto): Promise<ResData<UserEntity>> {
     const newUserEntity = new UserEntity(createUserDto);

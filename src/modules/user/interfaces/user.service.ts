@@ -10,5 +10,6 @@ export interface IUserService {
   delete(id: ID): Promise<ResData<UserEntity | undefined>>;
   findAll(): Promise<ResData<Array<UserEntity>>>;
   findOneById(id: ID): Promise<ResData<UserEntity | undefined>>;
+  findByCompnayId(id: ID): Promise<ResData<Array<UserEntity | undefined>>>;
   findByLogin(login: string): Promise<ResData<UserEntity | undefined>>;
 }
