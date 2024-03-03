@@ -34,16 +34,16 @@ export class RegisterDto {
   @IsNotEmpty()
   fullName: string;
 
-  @ApiProperty({ type: Number })
-  @IsNumber()
+  // @ApiProperty({ type: Number })
+  // @IsNumber()
   companyId: number;
 
-  @ApiProperty({ type: Number })
-  @IsNumber()
+  // @ApiProperty({ type: Number })
+  // @IsNumber()
   createdBy: number;
 
-  @ApiProperty({ type: Number })
-  @IsNumber()
+  // @ApiProperty({ type: Number })
+  // @IsNumber()
   lastUpdatedBy: number;
 
   @ApiProperty({ enum: RoleEnum })

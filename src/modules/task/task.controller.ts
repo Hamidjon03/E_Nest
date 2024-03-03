@@ -34,6 +34,7 @@ export class TaskController {
     @Body() createTaskDto: CreateTaskDto,
     @CurrentUser() currentUser: UserEntity,
   ) {
+    // console.log(currentUser)
     if (currentUser.role === 'admin' || currentUser.role === 'manager') {
       createTaskDto.companyId = currentUser.company_id;
     }

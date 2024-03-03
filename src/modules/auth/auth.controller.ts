@@ -30,25 +30,30 @@ export class AuthController {
     return await this.authService.login(loginDto);
   }
 
-  @Auth(RoleEnum.ADMIN, RoleEnum.SUPERADMIN)
+  // @Auth(RoleEnum.ADMIN, RoleEnum.SUPERADMIN)
   @HttpCode(HttpStatus.OK)
   @Post('register')
   async register(
     @Body() registerDto: RegisterDto,
-    @CurrentUser() currentUser: UserEntity
-    ) {
+    @CurrentUser() currentUser: UserEntity,
+  ) {
+    // console.log(registerDto);
+    // console.log(currentUser);
     const { data: foundUser } = await this.userService.findByLogin(
       registerDto.login,
     );
 
+    console.log(currentUser);
     if (foundUser) {
       throw new UserAlreadyExist();
     }
-    
+
     if (currentUser.role === 'admin') {
-      registerDto.companyId = currentUser.company_id
+      registerDto.companyId = currentUser.company_id;
     }
-    
+
+    console.log('work1');
+
     return await this.authService.register(registerDto);
   }
 }
