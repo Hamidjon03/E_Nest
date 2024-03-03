@@ -6,13 +6,11 @@ import { ID } from 'src/common/types/type';
 export class UserRepository extends Postgres implements IUserRepository {
   async insert(dto: UserEntity): Promise<UserEntity> {
     return await this.fetch<UserEntity, string | number | Date>(
-      `insert into users (login, password, full_name, company_id, created_at, last_updated_at, created_by, last_updated_by, role) values ($1, $2, $3, $4, $5, $6, $7, $8, $9) returning *`,
+      `insert into users (login, password, full_name, company_id, created_by, last_updated_by, role) values ($1, $2, $3, $4, $5, $6, $7) returning *`,
       dto.login,
       dto.password,
       dto.full_name,
       dto.company_id,
-      dto.created_at,
-      dto.last_updated_at,
       dto.created_by,
       dto.last_updated_by,
       dto.role,
@@ -25,19 +23,15 @@ export class UserRepository extends Postgres implements IUserRepository {
       password = $2, 
       full_name = $3, 
       company_id = $4, 
-      created_at = $5, 
-      last_updated_at = $6, 
-      created_by = $7, 
-      last_updated_by = $8, 
-      role = $9
-      where = id = $10
+      created_by = $5,
+      last_updated_by = $6, 
+      role = $7
+      where = id = $8
       returning *`,
       dto.login,
       dto.password,
       dto.full_name,
       dto.company_id,
-      dto.created_at,
-      dto.last_updated_at,
       dto.created_by,
       dto.last_updated_by,
       dto.role,

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { RoleEnum } from 'src/common/enums/enum';
 
 // must write with class validator
@@ -22,14 +22,6 @@ export class CreateUserDto {
   @ApiProperty({ type: Number })
   @IsNumber()
   companyId: number;
-
-  @ApiProperty({ type: Date })
-  @IsString()
-  createdAt: Date;
-
-  @ApiProperty({ type: Date })
-  @IsString()
-  lastUpdatedAt: Date;
 
   @ApiProperty({ type: Number })
   @IsNumber()

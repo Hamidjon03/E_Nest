@@ -54,8 +54,6 @@ export class UserService implements IUserService {
     foundUsers.password = updateUserDto.password;
     foundUsers.full_name = updateUserDto.fullName;
     foundUsers.company_id = updateUserDto.companyId;
-    foundUsers.created_at = updateUserDto.createdAt;
-    foundUsers.last_updated_at = updateUserDto.lastUpdatedAt;
     foundUsers.created_by = updateUserDto.createdBy;
     foundUsers.last_updated_by = updateUserDto.lastUpdatedBy;
     foundUsers.role = updateUserDto.role;

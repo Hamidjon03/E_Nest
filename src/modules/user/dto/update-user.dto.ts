@@ -23,14 +23,6 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsNumber()
   companyId: number;
 
-  @ApiProperty({ type: Date })
-  @IsString()
-  createdAt: Date;
-
-  @ApiProperty({ type: Date })
-  @IsString()
-  lastUpdatedAt: Date;
-
   @ApiProperty({ type: Number })
   @IsNumber()
   createdBy: number;

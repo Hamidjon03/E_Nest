@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { UserTaskService } from './user-task.service';
 import { CreateUserTaskDto } from './dto/create-user-task.dto';
 import { UpdateUserTaskDto } from './dto/update-user-task.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('user-task')
 @Controller('user-task')
 export class UserTaskController {
   constructor(private readonly userTaskService: UserTaskService) {}
