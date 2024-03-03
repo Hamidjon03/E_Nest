@@ -53,10 +53,8 @@ export class TaskService implements ITaskService {
   ): Promise<ResData<TaskEntity>> {
     const { data: foundTask } = await this.findOneById(id);
 
-    console.log(foundTask);
     foundTask.title = updateTaskDto.title;
     foundTask.description = updateTaskDto.description;
-    foundTask.company_id = updateTaskDto.companyId;
     foundTask.company_id = updateTaskDto.companyId;
     foundTask.created_by = updateTaskDto.createdBy;
     foundTask.last_updated_by = updateTaskDto.lastUpdatedBy;
