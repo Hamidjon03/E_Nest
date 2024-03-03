@@ -1,34 +1,63 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Put,
+  ParseIntPipe,
+  Inject,
+} from '@nestjs/common';
 import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { CompanyALreadyExistException } from './exception/company.exception';
+import { ID } from 'src/common/types/type';
 
+@ApiTags('company')
 @Controller('company')
 export class CompanyController {
-  constructor(private readonly companyService: CompanyService) {}
+  constructor(
+    @Inject('ICompanyService')
+    private readonly companyService: CompanyService,
+  ) {}
 
   @Post()
-  create(@Body() createCompanyDto: CreateCompanyDto) {
-    return this.companyService.create(createCompanyDto);
+  async create(@Body() createCompanyDto: CreateCompanyDto) {
+    const foundCompany = await this.companyService.findOneByName(
+      createCompanyDto.name,
+    );
+
+    if (foundCompany.data) {
+      throw new CompanyALreadyExistException();
+    }
+
+    return await this.companyService.create(createCompanyDto);
   }
 
   @Get()
-  findAll() {
-    return this.companyService.findAll();
+  async findAll() {
+    return await this.companyService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.companyService.findOne(+id);
+  async findOne(@Param('id', ParseIntPipe) id: ID) {
+    return await this.companyService.findOneById(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCompanyDto: UpdateCompanyDto) {
-    return this.companyService.update(+id, updateCompanyDto);
+  @Put(':id')
+  async update(
+    @Param('id', ParseIntPipe) id: ID,
+    @Body() updateCompanyDto: UpdateCompanyDto,
+  ) {
+    return await this.companyService.update(id, updateCompanyDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.companyService.remove(+id);
+  async remove(@Param('id', ParseIntPipe) id: ID) {
+    return await this.companyService.delete(id);
   }
 }
+
